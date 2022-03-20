@@ -21,7 +21,7 @@ char *verificaGhilimele(char *linie);
 char *primaParte(char *linie);
 
 // functia apeleaza o alta functie si intoarce o linie modifica
-char *modificaStringul(char *linieCod, struct DataItem *hashMap);
+char *modificaStringul(char *linieCod);
 
 // verific daca am functia #define
 int verificaLiniaDefine(char linieCod[100]);
@@ -42,7 +42,7 @@ char *modificaBufferMultipluDefine(char *buffer);
 // valorile define pe care le gaseste
 // ex #define VAR0 1 + 2 + 3
 // va pune in HashMap: "VAR0" "1 + 2 + 3"
-void insertDefineHashMap(struct DataItem *hashMap, char *linieCod,
+void insertDefineHashMap(char *linieCod,
 			 FILE *fisierPrimit);
 
 // #undef VAR0
@@ -69,7 +69,6 @@ char *verificaIarCheie(char *linieCod);
 
 // functia cauta sa modifice o linie, apoi sa o a afiseze
 // in alt fisier
-int start(FILE *fisierPrimit, FILE *fisierDeScris,
-		    struct DataItem *hashMap, char **argv, int argc);
+int start(FILE *fisierPrimit, FILE *fisierDeScris, char **argv, int argc);
 
 #endif

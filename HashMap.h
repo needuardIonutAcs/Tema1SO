@@ -11,7 +11,7 @@ struct DataItem {
 struct DataItem *hashArray[SIZE];
 struct DataItem *item;
 
-unsigned long hash(unsigned char *str);
+unsigned long hash(char *str);
 
 struct DataItem *search(char *key);
 

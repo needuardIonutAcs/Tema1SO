@@ -9,7 +9,7 @@
 
 // // caz in care primesc #if TEST
 // // iar TEST se afla in HashMap
-char *cazGasitValoareHashMap(char *parametru, char *buffer);
+char *cazGasitValoareHashMap(char *parametru);
 
 char *analizareConditieIf(char *linieCod);
 

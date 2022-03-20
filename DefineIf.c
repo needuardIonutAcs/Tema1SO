@@ -2,10 +2,11 @@
 
 // // caz in care primesc #if TEST
 // // iar TEST se afla in HashMap
-char *cazGasitValoareHashMap(char *parametru, char *buffer)
+char *cazGasitValoareHashMap(char *parametru)
 {
 	// vreau valoare din HashMap a lui parametru
-	struct DataItem *valoare = search(parametru);
+	struct DataItem *valoare = NULL;
+	valoare = search(parametru);
 
 	if (valoare != NULL)
 		return valoare->data;
@@ -53,9 +54,9 @@ char *sariElif(char *buffer)
 
 int intoarcePrimaLinie(char *buffer)
 {
-	int dimBuffer;
-	char *bufferDupaSpatiu;
-	int dimDupaSpatiu;
+	int dimBuffer = 0;
+	char *bufferDupaSpatiu = NULL;
+	int dimDupaSpatiu = 0;
 	int dimTotal = 0;
 
 	if (buffer == NULL)
@@ -78,11 +79,11 @@ int intoarcePrimaLinie(char *buffer)
 // afisez pana dau de #
 void afisarePanaLaCaracter(char *buffer, FILE *fisierDeScris)
 {
-	int dim;
+	int dim = 0;
 	char *urmatorHashTag = NULL;
 	int total = 0;
 	char bufferFinal[100] = "";
-	int dimHash;
+	int dimHash = 0;
 
 	if (buffer == NULL)
 		return;
@@ -117,6 +118,7 @@ void altaSolutie(char *primaLinie, char *buffer, FILE *fisierDeScris)
 	struct DataItem *valoareDinHash = NULL;
 	int dim = 0;
 	char aux[100] = "";
+	char *urmatorulElif = NULL;
 
 	if (primaLinie == NULL || buffer == NULL)
 		return;
@@ -137,7 +139,7 @@ void altaSolutie(char *primaLinie, char *buffer, FILE *fisierDeScris)
 				// deci caut sa vad daca mai am un #elseif
 				// sau #else, cu alte cuvinte ma plimb pana la
 				// urmatorul #
-				char *urmatorulElif = sariElif(buffer);
+				urmatorulElif = sariElif(buffer);
 
 				if (urmatorulElif == NULL)
 					return;
@@ -161,7 +163,7 @@ void altaSolutie(char *primaLinie, char *buffer, FILE *fisierDeScris)
 			// daca este valoarea din Hashmap, fac acelasi lucru ca
 			// mai sus
 			if (strstr(valoareDinHash->data, "0")) {
-				char *urmatorulElif = sariElif(buffer);
+				urmatorulElif = sariElif(buffer);
 
 				if (urmatorulElif == NULL)
 					return;

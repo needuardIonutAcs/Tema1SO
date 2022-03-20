@@ -19,7 +19,7 @@ char *intoarceCalea(char *linie);
 // primeste o linie cu #include "calea", iar de aici se fac verificari
 // si ce mai este nevoie
 // daca da eroare, intoarce -1
-int deschideFisierul(char *buffer, FILE *fisierPrimit, FILE *fisierDeScris,
+int deschideFisierul(char *buffer, FILE *fisierDeScris,
 		     char **argv, int argc);
 
 #endif

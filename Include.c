@@ -28,7 +28,7 @@ char *intoarceCalea(char *linie)
 // calea
 char *citesteParametriI(char **argv, int argc)
 {
-	int i;
+	int i = 0;
 	for (i = 0; i < argc; i++)
 		if (strstr(argv[i], "-I"))
 			return argv[++i];
@@ -38,14 +38,18 @@ char *citesteParametriI(char **argv, int argc)
 
 // primesc o linie, si fac prelucrari pe ea, deschid fisiere, adaug
 // din fisier in fisier pentru cand am #include
-int deschideFisierul(char *buffer, FILE *fisierPrimit, FILE *fisierDeScris,
+int deschideFisierul(char *buffer, FILE *fisierDeScris,
 		     char **argv, int argc)
 {
-	char *caleFisier = intoarceCalea(buffer);
+	char *caleFisier = NULL;
 	char caleToataFisier[100] = "";
 	int check = 0;
-	FILE *fisier;
-	FILE *fisierNou;
+	FILE *fisier = NULL;
+	FILE *fisierNou = NULL;
+	char *fisierParam = NULL;
+
+	caleFisier = intoarceCalea(buffer);
+	
 
 	if (caleFisier != NULL) {
 		strcat(caleToataFisier, "_test/inputs/");
@@ -57,7 +61,7 @@ int deschideFisierul(char *buffer, FILE *fisierPrimit, FILE *fisierDeScris,
 			check = 1;
 
 		if (fisier == NULL) {
-			char *fisierParam = citesteParametriI(argv, argc);
+			fisierParam = citesteParametriI(argv, argc);
 
 			if (fisierParam != NULL) {
 				check = 0;
@@ -67,9 +71,7 @@ int deschideFisierul(char *buffer, FILE *fisierPrimit, FILE *fisierDeScris,
 				fisierNou = fopen(fisierParam, "r");
 
 				if (fisierNou != NULL) {
-					char linieCitita[200] = "";
-
-					start(fisierNou, fisierDeScris, NULL,
+					start(fisierNou, fisierDeScris,
 					      argv, argc);
 					fclose(fisierNou);
 				} else {
@@ -83,9 +85,7 @@ int deschideFisierul(char *buffer, FILE *fisierPrimit, FILE *fisierDeScris,
 
 		// acum, citesc din fisier si afizez in fisierul meu
 		if (fisier != NULL) {
-			char linieCitita[200] = "";
-
-			start(fisier, fisierDeScris, NULL, argv, argc);
+			start(fisier, fisierDeScris, argv, argc);
 
 			if (fisier != NULL)
 				fclose(fisier);

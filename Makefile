@@ -1,4 +1,4 @@
-CC=cl.exe
+CC=cl.exe /MD
 
 LINK=link.exe
 

@@ -9,9 +9,9 @@
 //#include <unistd.h>
 
 // de aici incep prelucrarea pe #ifndef
-void prelucreazaIfNdef(char *buffer, FILE *fisierPrimit, FILE *fisierDeScris);
+void prelucreazaIfNdef(char *buffer, FILE *fisierPrimit);
 
 // de aici incep prelucrarea pe #ifdef
-void prelucreazaIfDef(char *buffer, FILE *fisierPrimit, FILE *fisierDeScris);
+void prelucreazaIfDef(char *buffer, FILE *fisierPrimit);
 
 #endif

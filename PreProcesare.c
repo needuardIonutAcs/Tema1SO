@@ -17,8 +17,10 @@ char *replaceWord(char *s, char *oldW, char *newW)
 {
 	char *result = NULL;
 	int i = 0, cnt = 0;
-	int newWlen = strlen(newW);
-	int oldWlen = strlen(oldW);
+	int newWlen = 0;
+	int oldWlen = 0;
+	newWlen = strlen(newW);
+	oldWlen = strlen(oldW);
 
 	// Counting the number of times old word
 	// occur in the string
@@ -83,7 +85,8 @@ char *primaParte(char *linie)
 	int once = 0;
 	static const char s[5] = "\"";
 	char *token = NULL;
-	char *buffer = calloc(500, sizeof(char));
+	char *buffer = NULL;
+	buffer = calloc(500, sizeof(char));
 	/* get the first token */
 	token = strtok(linie, s);
 
@@ -107,24 +110,28 @@ char *primaParte(char *linie)
 }
 
 // functia apeleaza o alta functie si intoarce o linie modifica
-char *modificaStringul(char *linieCod, struct DataItem *hashMap)
+char *modificaStringul(char *linieCod)
 {
 	char *result2 = NULL;
-	int i;
+	int i = 0;
 	char aux[100] = "\"";
+	char *copieLinieCod = NULL;
+	char *copieLinieCod2 = NULL;
+	char *verificare = NULL;
+	char *bucata = NULL;
 
 	for (i = 0; i < SIZE; i++) {
 		if (hashArray[i] != NULL) {
 			if (strstr(linieCod, hashArray[i]->key) &&
 			    strcmp(hashArray[i]->data, "") != 0) {
 
-				char *copieLinieCod = strdup(linieCod);
-				char *copieLinieCod2 = strdup(linieCod);
+				copieLinieCod = strdup(linieCod);
+				copieLinieCod2 = strdup(linieCod);
 
-				char *verificare =
+				verificare =
 				    verificaGhilimele(copieLinieCod);
 				if (verificare != NULL) {
-					char *bucata =
+					bucata =
 					    primaParte(copieLinieCod2);
 
 					if (bucata != NULL) {
@@ -188,8 +195,10 @@ char *verificaValoriDefine(char *buffer)
 	char *token = NULL;
 	char bufferNou[100] = "";
 	char linie[100] = "";
-	char buffeNou[40] = "";
-	char *linieModif = malloc(100);
+	char *linieModif = NULL;
+	char *linieModificata = NULL;
+
+	linieModif = malloc(100);
 
 	if (buffer == NULL)
 		return buffer;
@@ -203,7 +212,7 @@ char *verificaValoriDefine(char *buffer)
 		while (token != NULL) {
 			// acest token il compar cu ce am in HashMap
 			// si daca il gasesc concatenez la buffer
-			char *linieModificata = modificaStringul(token, NULL);
+			linieModificata = modificaStringul(token);
 
 			if (linieModificata != NULL) {
 				strcat(linie, linieModificata);
@@ -294,13 +303,12 @@ char *modificaBufferMultipluDefine(char *buffer)
 // valorile define pe care le gaseste
 // ex #define VAR0 1 + 2 + 3
 // va pune in HashMap: "VAR0" "1 + 2 + 3"
-void insertDefineHashMap(struct DataItem *hashMap, char *linieCod,
+void insertDefineHashMap(char *linieCod,
 			 FILE *fisierPrimit)
 {
 	char copieCod[100] = "";
 	int contor = 0;
 	char cheie[10] = "";
-	char data[10] = "";
 	char cuvant[100] = "";
 	char buffer[100] = "";
 	// este pus -1, pentru a nu copia si terminatorul
@@ -309,6 +317,7 @@ void insertDefineHashMap(struct DataItem *hashMap, char *linieCod,
 	char *token = NULL;
 	char *bufferNou = NULL;
 	char *bufferNouModif = NULL;
+	char *dataModif = NULL;
 
 	nr = strlen(linieCod) - 1;
 	memcpy(copieCod, linieCod, nr);
@@ -336,8 +345,8 @@ void insertDefineHashMap(struct DataItem *hashMap, char *linieCod,
 	// va trebui sa inlocui cu: 10 10 10
 	bufferNou = verificaValoriDefine(buffer);
 
-	// daca acest buffer se termina cu \
-   // o sa mai citesc din fisier pana cand un buffer nu mai are \
+	// daca acest buffer se termina cu
+   // o sa mai citesc din fisier pana cand un buffer nu mai are
 
 	// printf("inainte: %s\n", bufferNou);
 	bufferNouModif = defineMultiplu(bufferNou, fisierPrimit);
@@ -347,7 +356,7 @@ void insertDefineHashMap(struct DataItem *hashMap, char *linieCod,
 	} else {
 		// in acest caz inseamna ca am un define multiplu
 		// acum voi imparti cum trebuie acest string
-		char *dataModif = modificaBufferMultipluDefine(bufferNouModif);
+		dataModif = modificaBufferMultipluDefine(bufferNouModif);
 
 		insert(cheie, dataModif);
 		free(bufferNouModif);
@@ -366,10 +375,11 @@ void stergeVariabilaMap(char *linieCod)
 {
 
 	static const char s[2] = " ";
-	char *token;
+	char *token = NULL;
 	int contor = 0;
 	char cheieDeSters[20] = "";
 	struct DataItem *cheie = NULL;
+	struct DataItem *dummyItem = NULL;
 
 	/* get the first token */
 	token = strtok(linieCod, s);
@@ -386,7 +396,7 @@ void stergeVariabilaMap(char *linieCod)
 	cheie = search(cheieDeSters);
 
 	if (cheie != NULL) {
-		struct DataItem *dummyItem =
+		dummyItem =
 		    (struct DataItem *)malloc(sizeof(struct DataItem));
 		strcpy(dummyItem->data, "invalid");
 		strcpy(dummyItem->key, "invalid");
@@ -418,8 +428,11 @@ char *functieCitireTest(char *linieIntrare)
 char *getNumeFisierIesire(char *caleFisier)
 {
 	char fisierIntrareCopie[50] = "";
-	char *fisierIesireNume = calloc(50, sizeof(char));
+	char *fisierIesireNume = NULL;
 	char *numeTestIntrare = NULL;
+
+	fisierIesireNume = calloc(50, sizeof(char));
+	
 
 	memcpy(fisierIntrareCopie, caleFisier, strlen(caleFisier));
 	fisierIntrareCopie[strlen(caleFisier)] = '\0';
@@ -467,12 +480,12 @@ void descompuneParametru(char *linieCod)
 // linie si trebuie sa le inlocuiesc
 char *verificaIarCheie(char *linieCod)
 {
-	int i;
+	int i = 0;
 	for (i = 0; i < SIZE; i++) {
 		if (hashArray[i] != NULL) {
 			if (strstr(linieCod, hashArray[i]->key) &&
 			    strcmp(hashArray[i]->data, "") != 0) {
-				return modificaStringul(linieCod, NULL);
+				return modificaStringul(linieCod);
 			}
 		}
 	}
@@ -481,16 +494,19 @@ char *verificaIarCheie(char *linieCod)
 
 // functia cauta sa modifice o linie, apoi sa o a afiseze
 // in alt fisier
-int start(FILE *fisierPrimit, FILE *fisierDeScris,
-		    struct DataItem *hashMap, char **argv, int argc)
+int start(FILE *fisierPrimit, FILE *fisierDeScris, char **argv, int argc)
 {
 	int gasitMain = 0;
 	char codCitit[30] = "";
+	char copieCodCitit[30] = "";
+	char copieCodCititDefine[30] = "";
+	char *linieModificata = NULL;
+	char *iar = NULL;
+	int valoare = 0;
 
 	while (fgets(codCitit, 1024, fisierPrimit)) {
 		// fac o copie si o trimit mai departe pentru inspectare
-		char copieCodCitit[30] = "";
-		char copieCodCititDefine[30] = "";
+		
 		// fac copie pt a modifica fara griji
 		strcpy(copieCodCitit, codCitit);
 		strcpy(copieCodCititDefine, codCitit);
@@ -499,12 +515,12 @@ int start(FILE *fisierPrimit, FILE *fisierDeScris,
 		if (verificaLiniaDefine(copieCodCitit) == 0) {
 			// modific fiecare linie in parte
 
-			char *linieModificata =
-			    modificaStringul(copieCodCitit, hashMap);
+			linieModificata =
+			    modificaStringul(copieCodCitit);
 
 			// in caz ca am mai multe aparitii ale mai multor VAR1,
 			// VAR2 pe aceeasi linie
-			char *iar = verificaIarCheie(linieModificata);
+			iar = verificaIarCheie(linieModificata);
 
 
 			// cand dau de main anunt, pentru a putea afisa in
@@ -537,19 +553,16 @@ int start(FILE *fisierPrimit, FILE *fisierDeScris,
 					    fisierDeScris);
 		} else if (verificaLiniaDefine(copieCodCitit) == -4) {
 			// #ifdef
-			prelucreazaIfDef(copieCodCititDefine, fisierPrimit,
-					 fisierDeScris);
+			prelucreazaIfDef(copieCodCititDefine, fisierPrimit);
 
 		} else if (verificaLiniaDefine(copieCodCitit) == -5) {
 			// #ifndef
-			prelucreazaIfNdef(copieCodCititDefine, fisierPrimit,
-					  fisierDeScris);
+			prelucreazaIfNdef(copieCodCititDefine, fisierPrimit);
 		} else if (verificaLiniaDefine(copieCodCitit) == -6) {
 			// #include "cale-fisier"
-			int valoare = 0;
+			
 
-			valoare = deschideFisierul(copieCodCitit, fisierPrimit,
-						   fisierDeScris, argv, argc);
+			valoare = deschideFisierul(copieCodCitit, fisierDeScris, argv, argc);
 			// daca incerc sa deschid un fisier inexistent, afisez
 			// eroare
 			if (valoare == -1)
@@ -557,7 +570,7 @@ int start(FILE *fisierPrimit, FILE *fisierDeScris,
 
 		} else {
 			// in caz ca am define
-			insertDefineHashMap(hashMap, copieCodCititDefine,
+			insertDefineHashMap(copieCodCititDefine,
 					    fisierPrimit);
 		}
 	}

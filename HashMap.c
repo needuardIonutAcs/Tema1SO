@@ -5,20 +5,20 @@
 
 #include "HashMap.h"
 
-unsigned long hash(unsigned char *str)
+unsigned long hash(char *str)
 {
 	unsigned long hash = 5381;
-	int c;
+	int c = 0;
 
-	while (c = *str++)
+	while ((c= *str++))
 		hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
 
 	return hash;
 }
 
 struct DataItem *search(char *key)
-{
-	int hashIndex;
+{	
+	int hashIndex = 0;
 	if (key == NULL)
 		return NULL;
 
@@ -42,8 +42,9 @@ struct DataItem *search(char *key)
 
 void insert(char *key, char *data)
 {
-	int hashIndex;
-	struct DataItem *item =
+	int hashIndex = 0;
+	struct DataItem *item = NULL;
+	item =
 	    (struct DataItem *)malloc(sizeof(struct DataItem));
 
 	strcpy(item->data, data);
@@ -68,7 +69,8 @@ void insert(char *key, char *data)
 struct DataItem *delete(struct DataItem *item, struct DataItem *hashMap)
 {
 	// get the hash
-	int hashIndex = hash(item->key) % 100;
+	int hashIndex = 0;
+	hashIndex = hash(item->key) % 100;
 
 	// move in array until an empty
 	while (hashArray[hashIndex] != NULL) {
@@ -106,7 +108,7 @@ void display(void)
 
 char *getValue(char *key)
 {
-	int i;
+	int i = 0;
 	for (i = 0; i < SIZE; i++) {
 		if (hashArray[i] != NULL) {
 			if (strcmp(hashArray[i]->key, key) == 0)
@@ -118,7 +120,8 @@ char *getValue(char *key)
 
 struct DataItem *deleteValue(char *key)
 {
-	int i;
+	int i = 0;
+
 	for (i = 0; i < SIZE; i++) {
 		if (hashArray[i] != NULL) {
 			if (strcmp(hashArray[i]->key, key) == 0)

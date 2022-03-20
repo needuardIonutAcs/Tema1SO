@@ -3,11 +3,12 @@
 #include "PreProcesare.h"
 
 // de aici incep prelucrarea pe #ifndef
-void prelucreazaIfNdef(char *buffer, FILE *fisierPrimit, FILE *fisierDeScris)
+void prelucreazaIfNdef(char *buffer, FILE *fisierPrimit)
 {
 	char codCitit[500] = "";
 	char bufferPrincipal[500] = "";
 	char *valoare = NULL;
+	char *valoareDinHashMap = NULL;
 
 	// citesc si pun intr-un buffer tot ce se afla
 	// intre #if si #endif
@@ -23,7 +24,7 @@ void prelucreazaIfNdef(char *buffer, FILE *fisierPrimit, FILE *fisierDeScris)
 	valoare = analizareConditieIf(buffer);
 
 	if (valoare != NULL) {
-		char *valoareDinHashMap = cazGasitValoareHashMap(valoare, NULL);
+		valoareDinHashMap = cazGasitValoareHashMap(valoare);
 
 		if (valoareDinHashMap != NULL) {
 			// daca nu am nu fac nimic
@@ -34,7 +35,7 @@ void prelucreazaIfNdef(char *buffer, FILE *fisierPrimit, FILE *fisierDeScris)
 
 			if (verificaLiniaDefine(bufferPrincipal) == -1) {
 				// printf("%s", bufferPrincipal);
-				insertDefineHashMap(NULL, bufferPrincipal,
+				insertDefineHashMap(bufferPrincipal,
 						    fisierPrimit);
 			}
 		}
@@ -42,11 +43,12 @@ void prelucreazaIfNdef(char *buffer, FILE *fisierPrimit, FILE *fisierDeScris)
 }
 
 // de aici incep prelucrarea pe #ifdef
-void prelucreazaIfDef(char *buffer, FILE *fisierPrimit, FILE *fisierDeScris)
+void prelucreazaIfDef(char *buffer, FILE *fisierPrimit)
 {
 	char codCitit[500] = "";
 	char bufferPrincipal[500] = "";
-	char *valoare;
+	char *valoare = NULL;
+	char *valoareDinHashMap = NULL;
 
 	// citesc si pun intr-un buffer tot ce se afla
 	// intre #if si #endif
@@ -62,7 +64,7 @@ void prelucreazaIfDef(char *buffer, FILE *fisierPrimit, FILE *fisierDeScris)
 	valoare = analizareConditieIf(buffer);
 
 	if (valoare != NULL) {
-		char *valoareDinHashMap = cazGasitValoareHashMap(valoare, NULL);
+		valoareDinHashMap = cazGasitValoareHashMap(valoare);
 
 		if (valoareDinHashMap != NULL) {
 			// daca gasesc ceva, voi face

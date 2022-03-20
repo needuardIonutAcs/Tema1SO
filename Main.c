@@ -6,24 +6,30 @@ main(int argc, char **argv)
 {
 	// fisierele de intrare si de iesire
 	// in care voi citi / scrie
-	FILE *inputFile, *outputFIle;
-	char *fisierOuputAux;
-	int i;
+	FILE *inputFile = NULL, *outputFIle = NULL;
+	char *fisierOuputAux = NULL;
+	int i = 0;
 	int succes = 0;
 	char *cale = NULL;
 	// in acest fisier voi pune numele fisierului
 	// de iesire
+	struct DataItem *hashMap = NULL;
 	char fisierOuput[100] = "";
-	struct DataItem *hashMap =
+	int primitOut = -1;
+	FILE *testIn = NULL, *testOut = NULL;
+	char caleFisier[100] = "";
+	hashMap =
 	    (struct DataItem *)malloc(sizeof(struct DataItem));
 
 	// daca primesc doar ./so-cpp
 	if (argc == 1) {
-		char caracter;
+		//char caracter;
 		// in caz ca primesc caractere la stdin
 		//while (read(STDIN_FILENO, &caracter, 1) > 0)
-		while (read(0, &caracter, 1) > 0)
-			printf("%c", caracter);
+
+
+		// while (read(0, &caracter, 1) > 0)
+		// 	printf("%c", caracter);
 
 		return 0;
 	}
@@ -44,7 +50,7 @@ main(int argc, char **argv)
 		if (inputFile == NULL)
 			return -1;
 	} else {
-		int primitOut = -1;
+		
 		// daca am fisierele .in
 		// si daca am fisierele.out
 		// voi seta primitOut cu 0, in caz ca primesc
@@ -52,8 +58,8 @@ main(int argc, char **argv)
 
 		// daca nr de argumente este 2
 		if (argc == 3) {
-			FILE *testIn = fopen(argv[1], "r");
-			FILE *testOut = fopen(argv[2], "w");
+			testIn = fopen(argv[1], "r");
+			testOut = fopen(argv[2], "w");
 
 			// daca primesc numele fisierelor cum trebuie
 			if (testIn != NULL && testOut != NULL) {
@@ -71,7 +77,7 @@ main(int argc, char **argv)
 		// daca nu primesc fisierul de iesire
 		// citesc argumentele
 		if (primitOut == -1) {
-			char caleFisier[100] = "";
+			
 
 			for (i = 1; i < argc; i++) {
 				// daca primesc -D, inseamna ca dupa
@@ -126,7 +132,7 @@ main(int argc, char **argv)
 	
 	// functia principala, primeste fisierul de intrare
 	// si fisierul de iesire si apoi calculeaza tot
-	succes = start(inputFile, outputFIle, hashMap, argv, argc);
+	succes = start(inputFile, outputFIle, argv, argc);
 
 	// in caz ca functia de mai sus crapa,
 	// se elibereaza memoria si de inchid fisierele
